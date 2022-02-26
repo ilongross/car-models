@@ -14,45 +14,38 @@ import java.util.concurrent.atomic.AtomicLong;
 @Slf4j
 public class CarModelsStorage {
 
-    private static final Map<String, Map<Long, CarModel>> storageMap = new ConcurrentHashMap<>();
-    private static final Map<Long, Object> extractedInfoMap = new ConcurrentHashMap<>();
+    private static final Map<String, Map<Long, CarModel>> carModelsMap = new ConcurrentHashMap<>();
+    private static final Map<Long, Object> classifyCarModelsMap = new ConcurrentHashMap<>();
     private final AtomicLong counter = new AtomicLong(0);
 
     public void addToStorage(CarModel carModel) {
         var id = counter.incrementAndGet();
+        fillCarModelsMap(id, carModel);
+        fillClassifyModelsMap(id, carModel);
+        log.info("CAR STORAGE size: {}", counter.get());
+    }
 
-        classifyModel(id, carModel.getBrand());
-
-        if(storageMap.containsKey(carModel.getBrand())) {
-            storageMap.get(carModel.getBrand()).put(id, carModel);
+    private void fillCarModelsMap(Long id, CarModel carModel) {
+        if(carModelsMap.containsKey(carModel.getBrand())) {
+            carModelsMap.get(carModel.getBrand()).put(id, carModel);
         }
         else {
             var innerMap = new HashMap<Long, CarModel>();
             innerMap.put(id, carModel);
-            storageMap.put(carModel.getBrand(), innerMap);
+            carModelsMap.put(carModel.getBrand(), innerMap);
         }
-
-        log.info("CONSUMER: Added to storageMap CAR MODEL: id={} {}", id, carModel);
-        log.info("CAR STORAGE size: {}", counter.get());
-
+        log.info("CONSUMER: Added to carModelsMap CAR MODEL: id={} {}", id, carModel);
     }
 
-    private void classifyModel(Long id, String brand) {
-        CarModelClassify model = null;
-        switch (brand) {
-            case "Tesla":
-                model = TeslaModel.builder().logo("TESLA_LOGO").build();
-                break;
-            case "Jeep":
-                model = JeepModel.builder().isSUV(new Random().nextBoolean()).build();
-                break;
-            case "KIA":
-                model = KiaModel.builder().isTaxi(new Random().nextBoolean()).driverName("SOME_DRIVER").build();
-                break;
-        }
-        extractedInfoMap.put(id, model);
-        log.info("CONSUMER: Added to extractedInfoMap CAR MODEL: {}", model);
-
+    private void fillClassifyModelsMap(Long id, CarModel carModel) {
+        var model = switch (carModel.getBrand()) {
+            case "Tesla" -> TeslaModel.builder().logo("TESLA_LOGO").build();
+            case "Jeep" -> JeepModel.builder().isSUV(new Random().nextBoolean()).build();
+            case "KIA" -> KiaModel.builder().isTaxi(new Random().nextBoolean()).driverName("SOME_DRIVER").build();
+            default -> null;
+        };
+        classifyCarModelsMap.put(id, model);
+        log.info("CONSUMER: Added to classifyCarModelsMap CAR MODEL: {}", model);
     }
 
 }
