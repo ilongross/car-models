@@ -1,0 +1,24 @@
+server:
+  port: 8081
+
+spring:
+  kafka:
+    producer:
+#      bootstrap-servers: 9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring:
+          json:
+            type:
+              mapping: car_model:com.ilongross.producer_service.model.CarModel
+
+brands: Tesla,Jeep,KIA
+
+models:
+  tesla: 3,S,X,Y,Roadster,Roadster II,Semi,Cybertruck
+  jeep: Compass,Grand Cherokee,Wrangler
+  kia: Sportage,Sorento,Rio,Seltos,Picanto,Ceed,Soul
+
+generator:
+  delay: 0
