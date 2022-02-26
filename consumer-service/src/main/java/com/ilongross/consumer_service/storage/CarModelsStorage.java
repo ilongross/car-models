@@ -22,7 +22,7 @@ public class CarModelsStorage {
         var id = counter.incrementAndGet();
         fillCarModelsMap(id, carModel);
         fillClassifyModelsMap(id, carModel);
-        log.info("CAR STORAGE size: {}", counter.get());
+        carModelsStorageInfo();
     }
 
     private void fillCarModelsMap(Long id, CarModel carModel) {
@@ -46,6 +46,13 @@ public class CarModelsStorage {
         };
         classifyCarModelsMap.put(id, model);
         log.info("CONSUMER: Added to classifyCarModelsMap CAR MODEL: {}", model);
+    }
+
+    private void carModelsStorageInfo() {
+        log.info("CAR MODELS MAP size: {}", counter.get());
+        for (var brand : carModelsMap.keySet()) {
+            log.info("BRAND: {}; Size: {}", brand, carModelsMap.get(brand).size());
+        }
     }
 
 }
