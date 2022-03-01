@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class KiaModel implements CarModelClassify {
+public class KiaModel implements CarModelClassified {
 
     private boolean isTaxi;
     private String driverName;

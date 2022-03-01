@@ -15,13 +15,13 @@ import java.util.concurrent.atomic.AtomicLong;
 public class CarModelsStorage {
 
     private static final Map<String, Map<Long, CarModel>> carModelsMap = new ConcurrentHashMap<>();
-    private static final Map<Long, Object> classifyCarModelsMap = new ConcurrentHashMap<>();
+    private static final Map<Long, CarModelClassified> classifiedCarModelsMap = new ConcurrentHashMap<>();
     private final AtomicLong counter = new AtomicLong(0);
 
     public void addToStorage(CarModel carModel) {
         var id = counter.incrementAndGet();
         fillCarModelsMap(id, carModel);
-        fillClassifyModelsMap(id, carModel);
+        fillClassifiedCarModelsMap(id, carModel);
         carModelsStorageInfo();
     }
 
@@ -37,15 +37,15 @@ public class CarModelsStorage {
         log.info("CONSUMER: Added to carModelsMap CAR MODEL: id={} {}", id, carModel);
     }
 
-    private void fillClassifyModelsMap(Long id, CarModel carModel) {
+    private void fillClassifiedCarModelsMap(Long id, CarModel carModel) {
         var model = switch (carModel.getBrand()) {
             case "Tesla" -> TeslaModel.builder().logo("TESLA_LOGO").build();
             case "Jeep" -> JeepModel.builder().isSUV(new Random().nextBoolean()).build();
             case "KIA" -> KiaModel.builder().isTaxi(new Random().nextBoolean()).driverName("SOME_DRIVER").build();
             default -> null;
         };
-        classifyCarModelsMap.put(id, model);
-        log.info("CONSUMER: Added to classifyCarModelsMap CAR MODEL: {}", model);
+        classifiedCarModelsMap.put(id, model);
+        log.info("CONSUMER: Added to classifiedCarModelsMap CAR MODEL: {}", model);
     }
 
     private void carModelsStorageInfo() {

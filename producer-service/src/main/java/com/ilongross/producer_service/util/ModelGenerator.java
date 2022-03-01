@@ -1,6 +1,7 @@
 package com.ilongross.producer_service.util;
 
 import com.ilongross.producer_service.model.CarModel;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,12 +23,10 @@ public class ModelGenerator {
     @Value("${models.kia}")
     private String kiaModels;
 
+    @SneakyThrows
     public CarModel carModel() {
-        try {
-            Thread.sleep(delay);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Thread.sleep(delay);
+
         var brandsArray = brands.split(",");
         var brand = brandsArray[new Random().nextInt(brandsArray.length)];
         var rand = new Random();
@@ -40,13 +39,12 @@ public class ModelGenerator {
     }
 
     private String getModel(String brand) {
-        var result = "";
-        switch (brand) {
-            case "Tesla": result = parseModels(teslaModels); break;
-            case "Jeep": result = parseModels(jeepModels); break;
-            case "KIA": result = parseModels(kiaModels); break;
-        }
-        return result;
+        return switch (brand) {
+            case "Tesla" -> parseModels(teslaModels);
+            case "Jeep" -> parseModels(jeepModels);
+            case "KIA" -> parseModels(kiaModels);
+            default -> "";
+        };
     }
 
     private String parseModels(String models) {

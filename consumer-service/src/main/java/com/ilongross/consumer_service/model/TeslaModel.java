@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class TeslaModel implements CarModelClassify {
+public class TeslaModel implements CarModelClassified {
 
     private String logo;
 
