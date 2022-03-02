@@ -51,10 +51,11 @@ public class CarModelsStorage {
     }
 
     private void carModelsStorageInfo() {
-        log.info("CAR MODELS MAP size: {}", counter.get());
+        var countModelsMap = new HashMap<>();
         for (var brand : carModelsMap.keySet()) {
-            log.info("BRAND: {}; Size: {}", brand, carModelsMap.get(brand).size());
+            countModelsMap.put(brand, carModelsMap.get(brand).size());
         }
+        log.info("Total: {}: {}", counter.get(), countModelsMap);
     }
 
 }
