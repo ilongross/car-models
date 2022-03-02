@@ -1,5 +1,7 @@
 package com.ilongross.consumer_service.storage;
 
+import com.ilongross.consumer_service.aspect.LoggingCarModel;
+import com.ilongross.consumer_service.aspect.LoggingClassifiedCarModel;
 import com.ilongross.consumer_service.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -25,6 +27,7 @@ public class CarModelsStorage {
         carModelsStorageInfo();
     }
 
+    @LoggingCarModel
     private void fillCarModelsMap(Long id, CarModel carModel) {
         if(carModelsMap.containsKey(carModel.getBrand())) {
             carModelsMap.get(carModel.getBrand()).put(id, carModel);
@@ -34,9 +37,9 @@ public class CarModelsStorage {
             innerMap.put(id, carModel);
             carModelsMap.put(carModel.getBrand(), innerMap);
         }
-        log.info("CONSUMER: Added to carModelsMap CAR MODEL: id={} {}", id, carModel);
     }
 
+    @LoggingClassifiedCarModel
     private void fillClassifiedCarModelsMap(Long id, CarModel carModel) {
         var model = switch (carModel.getBrand()) {
             case "Tesla" -> TeslaModel.builder().logo("TESLA_LOGO").build();
@@ -45,7 +48,6 @@ public class CarModelsStorage {
             default -> null;
         };
         classifiedCarModelsMap.put(id, model);
-        log.info("CONSUMER: Added to classifiedCarModelsMap CAR MODEL: {}", model);
     }
 
     private void carModelsStorageInfo() {

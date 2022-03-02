@@ -18,6 +18,11 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>org.aspectJ</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.8.RC3</version>
+        </dependency>
 
     </dependencies>
 

@@ -29,12 +29,11 @@ public class ModelGenerator {
 
         var brandsArray = brands.split(",");
         var brand = brandsArray[new Random().nextInt(brandsArray.length)];
-        var rand = new Random();
         return CarModel.builder()
                 .brand(brand)
                 .modelName(getModel(brand))
-                .travelDistance(rand.nextInt(100000 - 30000) + 30000L)
-                .maxSpeed(rand.nextInt(300 - 200) + 200L)
+                .travelDistance(getRandomLong(30000, 100000))
+                .maxSpeed(getRandomLong(200, 300))
                 .build();
     }
 
@@ -52,5 +51,8 @@ public class ModelGenerator {
         return array[new Random().nextInt(array.length)];
     }
 
+    private Long getRandomLong(int min, int max) {
+        return (long) (new Random().nextInt(max - min) + min);
+    }
 
 }
