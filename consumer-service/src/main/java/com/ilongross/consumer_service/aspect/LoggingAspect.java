@@ -17,7 +17,7 @@ public class LoggingAspect {
     @AfterReturning("loggingCarModel()")
     public void loggingCarModelAdvice(JoinPoint joinPoint) {
         for (var arg : joinPoint.getArgs()) {
-            if(arg instanceof CarModel || arg instanceof CarModelClassified) {
+            if(arg instanceof CarModel) {
                 log.info("CONSUMER: Added to storage CAR MODEL: {}", arg);
             }
         }
