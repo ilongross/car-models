@@ -1,7 +1,6 @@
 package com.ilongross.consumer_service.storage;
 
 import com.ilongross.consumer_service.aspect.LoggingCarModel;
-import com.ilongross.consumer_service.aspect.LoggingClassifiedCarModel;
 import com.ilongross.consumer_service.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,14 +19,14 @@ public class CarModelsStorage {
     private static final Map<Long, CarModelClassified> classifiedCarModelsMap = new ConcurrentHashMap<>();
     private final AtomicLong counter = new AtomicLong(0);
 
-    public void addToStorage(CarModel carModel) {
+    @LoggingCarModel
+    public synchronized void addToStorage(CarModel carModel) {
         var id = counter.incrementAndGet();
         fillCarModelsMap(id, carModel);
         fillClassifiedCarModelsMap(id, carModel);
         carModelsStorageInfo();
     }
 
-    @LoggingCarModel
     private void fillCarModelsMap(Long id, CarModel carModel) {
         if(carModelsMap.containsKey(carModel.getBrand())) {
             carModelsMap.get(carModel.getBrand()).put(id, carModel);
@@ -39,7 +38,6 @@ public class CarModelsStorage {
         }
     }
 
-    @LoggingClassifiedCarModel
     private void fillClassifiedCarModelsMap(Long id, CarModel carModel) {
         var model = switch (carModel.getBrand()) {
             case "Tesla" -> TeslaModel.builder().logo("TESLA_LOGO").build();
