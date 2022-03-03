@@ -13,22 +13,21 @@ public class ModelGenerator {
     @Value("${generator.delay}")
     private Integer delay;
 
-    @Value("${brands}")
-    private String brands;
+    @Value("#{'${brands}'.split(',')}")
+    public String[] brands;
 
-    @Value("${models.tesla}")
-    private String teslaModels;
-    @Value("${models.jeep}")
-    private String jeepModels;
-    @Value("${models.kia}")
-    private String kiaModels;
+    @Value("#{'${models.tesla}'.split(',')}")
+    private String[] teslaModels;
+    @Value("#{'${models.jeep}'.split(',')}")
+    private String[] jeepModels;
+    @Value("#{'${models.kia}'.split(',')}")
+    private String[] kiaModels;
 
     @SneakyThrows
     public CarModel carModel() {
         Thread.sleep(delay);
 
-        var brandsArray = brands.split(",");
-        var brand = brandsArray[new Random().nextInt(brandsArray.length)];
+        var brand = getRandom(brands);
         return CarModel.builder()
                 .brand(brand)
                 .modelName(getModel(brand))
@@ -39,15 +38,14 @@ public class ModelGenerator {
 
     private String getModel(String brand) {
         return switch (brand) {
-            case "Tesla" -> parseModels(teslaModels);
-            case "Jeep" -> parseModels(jeepModels);
-            case "KIA" -> parseModels(kiaModels);
+            case "Tesla" -> getRandom(teslaModels);
+            case "Jeep" -> getRandom(jeepModels);
+            case "KIA" -> getRandom(kiaModels);
             default -> "";
         };
     }
 
-    private String parseModels(String models) {
-        var array = models.split(",");
+    private String getRandom(String[] array) {
         return array[new Random().nextInt(array.length)];
     }
 

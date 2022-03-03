@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
 import java.util.Random;
 
 @SpringBootTest
@@ -36,6 +37,11 @@ class ProducerServiceApplicationTests {
         for (int i = 0; i < 5; i++) {
             log.info("CAR MODEL: {}", modelGenerator.carModel());
         }
+    }
+
+    @Test
+    void parseBrandsInValueAnnotation() {
+        log.info("Brands: {}", Arrays.toString(modelGenerator.brands));
     }
 
 
