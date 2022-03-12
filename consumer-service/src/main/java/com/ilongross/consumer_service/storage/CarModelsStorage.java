@@ -4,6 +4,7 @@ import com.ilongross.consumer_service.aspect.LoggingCarModel;
 import com.ilongross.consumer_service.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +21,8 @@ public class CarModelsStorage {
     private final AtomicLong counter = new AtomicLong(0);
 
     @LoggingCarModel
-    public synchronized void addToStorage(CarModel carModel) {
+    @Transactional
+    public void addToStorage(CarModel carModel) {
         var id = counter.incrementAndGet();
         fillCarModelsMap(id, carModel);
         fillClassifiedCarModelsMap(id, carModel);

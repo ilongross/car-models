@@ -17,3 +17,9 @@ spring:
             value:
               delegate:
                 class: org.springframework.kafka.support.serializer.JsonDeserializer
+
+logging:
+  file:
+    path: log/consumer
+  level:
+    org: error

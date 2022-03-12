@@ -1,6 +1,7 @@
 server:
   port: 8081
 
+
 spring:
   kafka:
     producer:
@@ -22,3 +23,9 @@ models:
 
 generator:
   delay: 0
+
+logging:
+  file:
+    path: log/producer
+  level:
+    org: error
